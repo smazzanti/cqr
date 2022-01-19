@@ -16,7 +16,8 @@ setup(
         'pandas>=1.0.3',
         'numpy>=1.18.1',
         'sklearn',
-        'category_encoders'
+        'category_encoders',
+        'scikit-garden'
     ],
     zip_safe=False
 )
