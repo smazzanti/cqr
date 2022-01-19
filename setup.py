@@ -8,7 +8,7 @@ setup(
     author='Samuele Mazzanti',
     author_email='mazzanti.sam@gmail.com',
     license='MIT',
-    packages=['cqr'],
+    packages=['cqr','nonconformist'],
     install_requires=[
         'jinja2',
         'tqdm',
