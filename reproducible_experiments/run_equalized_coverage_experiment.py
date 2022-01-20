@@ -18,7 +18,7 @@ def condition(x, y=None):
     return int(x[0][-1]>0)
 
 
-from cqr.cqr import helper
+from cqr import helper
 from cqr.nonconformist.nc import RegressorNc
 from cqr.nonconformist.nc import SignErrorErrFunc
 from cqr.nonconformist.nc import QuantileRegAsymmetricErrFunc

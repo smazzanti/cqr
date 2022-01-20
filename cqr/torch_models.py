@@ -4,7 +4,7 @@ import copy
 import torch
 import numpy as np
 import torch.nn as nn
-from cqr.cqr import helper
+from cqr import helper
 from sklearn.model_selection import train_test_split
 
 

@@ -4,7 +4,7 @@ import torch
 import random
 import numpy as np
 import pandas as pd
-from cqr.cqr import helper
+from cqr import helper
 from datasets import datasets
 from sklearn import linear_model
 from cqr.nonconformist.nc import NcFactory

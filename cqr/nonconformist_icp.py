@@ -183,6 +183,7 @@ class IcpClassifier(BaseIcp, ClassifierMixin):
         [False,  True, False],
         [False,  True, False]], dtype=bool)
     """
+
 	def __init__(self, nc_function, condition=None, smoothing=True):
 		super(IcpClassifier, self).__init__(nc_function, condition)
 		self.classes = None
