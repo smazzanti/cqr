@@ -17,10 +17,11 @@ import pandas as pd
 def condition(x, y=None):
     return int(x[0][-1]>0)
 
-from cqr import helper
-from nonconformist.nc import RegressorNc
-from nonconformist.nc import SignErrorErrFunc
-from nonconformist.nc import QuantileRegAsymmetricErrFunc
+
+from cqr.cqr import helper
+from cqr.nonconformist.nc import RegressorNc
+from cqr.nonconformist.nc import SignErrorErrFunc
+from cqr.nonconformist.nc import QuantileRegAsymmetricErrFunc
 
 
 def append_statistics(coverage_sample,
@@ -170,17 +171,17 @@ def run_equalized_coverage_experiment(dataset_name, method, seed, save_to_csv=Tr
         # In[4]:
         
         model = helper.MSENet_RegressorAdapter(model=None,
-                                   fit_params=None,
-                                   in_shape = in_shape,
-                                   hidden_size = hidden_size,
-                                   learn_func = nn_learn_func,
-                                   epochs = epochs,
-                                   batch_size=batch_size,
-                                   dropout=dropout,
-                                   lr=lr,
-                                   wd=wd,
-                                   test_ratio=cv_test_ratio,
-                                   random_state=cv_random_state)
+                                               fit_params=None,
+                                               in_shape = in_shape,
+                                               hidden_size = hidden_size,
+                                               learn_func = nn_learn_func,
+                                               epochs = epochs,
+                                               batch_size=batch_size,
+                                               dropout=dropout,
+                                               lr=lr,
+                                               wd=wd,
+                                               test_ratio=cv_test_ratio,
+                                               random_state=cv_random_state)
         
         nc = RegressorNc(model, SignErrorErrFunc())
 

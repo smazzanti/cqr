@@ -4,19 +4,19 @@ import torch
 import random
 import numpy as np
 import pandas as pd
-from cqr import helper
+from cqr.cqr import helper
 from datasets import datasets
 from sklearn import linear_model
-from nonconformist.nc import NcFactory
-from nonconformist.nc import RegressorNc
-from nonconformist.nc import AbsErrorErrFunc
-from nonconformist.nc import QuantileRegErrFunc
-from nonconformist.nc import RegressorNormalizer
+from cqr.nonconformist.nc import NcFactory
+from cqr.nonconformist.nc import RegressorNc
+from cqr.nonconformist.nc import AbsErrorErrFunc
+from cqr.nonconformist.nc import QuantileRegErrFunc
+from cqr.nonconformist.nc import RegressorNormalizer
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
-from nonconformist.nc import QuantileRegAsymmetricErrFunc
+from cqr.nonconformist.nc import QuantileRegAsymmetricErrFunc
 
 
 pd.set_option('precision', 3)
@@ -225,8 +225,8 @@ def run_experiment(dataset_name,
 
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"Ridge")
-        coverage_linear, length_linear = helper.compute_coverage(y_test,y_lower,y_upper,significance,"Ridge")
+            helper.plot_func_data(y_test, y_lower, y_upper, "Ridge")
+        coverage_linear, length_linear = helper.compute_coverage(y_test, y_lower, y_upper, significance, "Ridge")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('Ridge')
@@ -241,8 +241,8 @@ def run_experiment(dataset_name,
 
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"Ridge-L")
-        coverage_linear_local, length_linear_local = helper.compute_coverage(y_test,y_lower,y_upper,significance,"Ridge-L")
+            helper.plot_func_data(y_test, y_lower, y_upper, "Ridge-L")
+        coverage_linear_local, length_linear_local = helper.compute_coverage(y_test, y_lower, y_upper, significance, "Ridge-L")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('Ridge-L')
@@ -270,8 +270,8 @@ def run_experiment(dataset_name,
 
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"Net")
-        coverage_net, length_net = helper.compute_coverage(y_test,y_lower,y_upper,significance,"Net")
+            helper.plot_func_data(y_test, y_lower, y_upper, "Net")
+        coverage_net, length_net = helper.compute_coverage(y_test, y_lower, y_upper, significance, "Net")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('Net')
@@ -292,17 +292,17 @@ def run_experiment(dataset_name,
                                                             test_ratio=cv_test_ratio,
                                                             random_state=cv_random_state)
         adapter = helper.MSENet_RegressorAdapter(model=None,
-                                                fit_params=None,
-                                                in_shape = in_shape,
-                                                hidden_size = hidden_size,
-                                                learn_func = nn_learn_func,
-                                                epochs = epochs,
-                                                batch_size=batch_size,
-                                                dropout=dropout,
-                                                lr=lr,
-                                                wd=wd,
-                                                test_ratio=cv_test_ratio,
-                                                random_state=cv_random_state)
+                                                 fit_params=None,
+                                                 in_shape = in_shape,
+                                                 hidden_size = hidden_size,
+                                                 learn_func = nn_learn_func,
+                                                 epochs = epochs,
+                                                 batch_size=batch_size,
+                                                 dropout=dropout,
+                                                 lr=lr,
+                                                 wd=wd,
+                                                 test_ratio=cv_test_ratio,
+                                                 random_state=cv_random_state)
 
         normalizer = RegressorNormalizer(adapter,
                                          normalizer_adapter,
@@ -310,8 +310,8 @@ def run_experiment(dataset_name,
         nc = RegressorNc(adapter, AbsErrorErrFunc(), normalizer, beta=beta_net)
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"Net-L")
-        coverage_net_local, length_net_local = helper.compute_coverage(y_test,y_lower,y_upper,significance,"Net-L")
+            helper.plot_func_data(y_test, y_lower, y_upper, "Net-L")
+        coverage_net_local, length_net_local = helper.compute_coverage(y_test, y_lower, y_upper, significance, "Net-L")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('Net-L')
@@ -328,8 +328,8 @@ def run_experiment(dataset_name,
 
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"RF")
-        coverage_forest, length_forest = helper.compute_coverage(y_test,y_lower,y_upper,significance,"RF")
+            helper.plot_func_data(y_test, y_lower, y_upper, "RF")
+        coverage_forest, length_forest = helper.compute_coverage(y_test, y_lower, y_upper, significance, "RF")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('RF')
@@ -346,8 +346,8 @@ def run_experiment(dataset_name,
 
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"RF-L")
-        coverage_forest_local, length_forest_local = helper.compute_coverage(y_test,y_lower,y_upper,significance,"RF-L")
+            helper.plot_func_data(y_test, y_lower, y_upper, "RF-L")
+        coverage_forest_local, length_forest_local = helper.compute_coverage(y_test, y_lower, y_upper, significance, "RF-L")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('RF-L')
@@ -360,26 +360,26 @@ def run_experiment(dataset_name,
     if 'quantile_net' == test_method:
 
         model_full = helper.AllQNet_RegressorAdapter(model=None,
-                                             fit_params=None,
-                                             in_shape = in_shape,
-                                             hidden_size = hidden_size,
-                                             quantiles = quantiles,
-                                             learn_func = nn_learn_func,
-                                             epochs = epochs,
-                                             batch_size=batch_size,
-                                             dropout=dropout,
-                                             lr=lr,
-                                             wd=wd,
-                                             test_ratio=cv_test_ratio,
-                                             random_state=cv_random_state,
-                                             use_rearrangement=False)
+                                                     fit_params=None,
+                                                     in_shape = in_shape,
+                                                     hidden_size = hidden_size,
+                                                     quantiles = quantiles,
+                                                     learn_func = nn_learn_func,
+                                                     epochs = epochs,
+                                                     batch_size=batch_size,
+                                                     dropout=dropout,
+                                                     lr=lr,
+                                                     wd=wd,
+                                                     test_ratio=cv_test_ratio,
+                                                     random_state=cv_random_state,
+                                                     use_rearrangement=False)
         model_full.fit(X_train, y_train)
         tmp = model_full.predict(X_test)
         y_lower = tmp[:,0]
         y_upper = tmp[:,1]
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"QNet")
-        coverage_qnet, length_qnet = helper.compute_coverage(y_test,y_lower,y_upper,significance,"QNet")
+            helper.plot_func_data(y_test, y_lower, y_upper, "QNet")
+        coverage_qnet, length_qnet = helper.compute_coverage(y_test, y_lower, y_upper, significance, "QNet")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('QNet')
@@ -390,25 +390,25 @@ def run_experiment(dataset_name,
     if 'cqr_quantile_net' == test_method:
 
         model = helper.AllQNet_RegressorAdapter(model=None,
-                                             fit_params=None,
-                                             in_shape = in_shape,
-                                             hidden_size = hidden_size,
-                                             quantiles = quantiles_net,
-                                             learn_func = nn_learn_func,
-                                             epochs = epochs,
-                                             batch_size=batch_size,
-                                             dropout=dropout,
-                                             lr=lr,
-                                             wd=wd,
-                                             test_ratio=cv_test_ratio,
-                                             random_state=cv_random_state,
-                                             use_rearrangement=False)
+                                                fit_params=None,
+                                                in_shape = in_shape,
+                                                hidden_size = hidden_size,
+                                                quantiles = quantiles_net,
+                                                learn_func = nn_learn_func,
+                                                epochs = epochs,
+                                                batch_size=batch_size,
+                                                dropout=dropout,
+                                                lr=lr,
+                                                wd=wd,
+                                                test_ratio=cv_test_ratio,
+                                                random_state=cv_random_state,
+                                                use_rearrangement=False)
         nc = RegressorNc(model, QuantileRegErrFunc())
 
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"CQR Net")
-        coverage_cp_qnet, length_cp_qnet = helper.compute_coverage(y_test,y_lower,y_upper,significance,"CQR Net")
+            helper.plot_func_data(y_test, y_lower, y_upper, "CQR Net")
+        coverage_cp_qnet, length_cp_qnet = helper.compute_coverage(y_test, y_lower, y_upper, significance, "CQR Net")
 
 
         dataset_name_vec.append(dataset_name)
@@ -421,25 +421,25 @@ def run_experiment(dataset_name,
     if 'cqr_asymmetric_quantile_net' == test_method:
 
         model = helper.AllQNet_RegressorAdapter(model=None,
-                                             fit_params=None,
-                                             in_shape = in_shape,
-                                             hidden_size = hidden_size,
-                                             quantiles = quantiles_net,
-                                             learn_func = nn_learn_func,
-                                             epochs = epochs,
-                                             batch_size=batch_size,
-                                             dropout=dropout,
-                                             lr=lr,
-                                             wd=wd,
-                                             test_ratio=cv_test_ratio,
-                                             random_state=cv_random_state,
-                                             use_rearrangement=False)
+                                                fit_params=None,
+                                                in_shape = in_shape,
+                                                hidden_size = hidden_size,
+                                                quantiles = quantiles_net,
+                                                learn_func = nn_learn_func,
+                                                epochs = epochs,
+                                                batch_size=batch_size,
+                                                dropout=dropout,
+                                                lr=lr,
+                                                wd=wd,
+                                                test_ratio=cv_test_ratio,
+                                                random_state=cv_random_state,
+                                                use_rearrangement=False)
         nc = RegressorNc(model, QuantileRegAsymmetricErrFunc())
 
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"CQR Sign Net")
-        coverage_cp_sign_qnet, length_cp_sign_qnet = helper.compute_coverage(y_test,y_lower,y_upper,significance,"CQR Sign Net")
+            helper.plot_func_data(y_test, y_lower, y_upper, "CQR Sign Net")
+        coverage_cp_sign_qnet, length_cp_sign_qnet = helper.compute_coverage(y_test, y_lower, y_upper, significance, "CQR Sign Net")
 
 
         dataset_name_vec.append(dataset_name)
@@ -454,26 +454,26 @@ def run_experiment(dataset_name,
     if 'rearrangement' == test_method:
 
         model_full = helper.AllQNet_RegressorAdapter(model=None,
-                                             fit_params=None,
-                                             in_shape = in_shape,
-                                             hidden_size = hidden_size,
-                                             quantiles = quantiles,
-                                             learn_func = nn_learn_func,
-                                             epochs = epochs,
-                                             batch_size=batch_size,
-                                             dropout=dropout,
-                                             lr=lr,
-                                             wd=wd,
-                                             test_ratio=cv_test_ratio,
-                                             random_state=cv_random_state,
-                                             use_rearrangement=True)
+                                                     fit_params=None,
+                                                     in_shape = in_shape,
+                                                     hidden_size = hidden_size,
+                                                     quantiles = quantiles,
+                                                     learn_func = nn_learn_func,
+                                                     epochs = epochs,
+                                                     batch_size=batch_size,
+                                                     dropout=dropout,
+                                                     lr=lr,
+                                                     wd=wd,
+                                                     test_ratio=cv_test_ratio,
+                                                     random_state=cv_random_state,
+                                                     use_rearrangement=True)
         model_full.fit(X_train, y_train)
         tmp = model_full.predict(X_test)
         y_lower = tmp[:,0]
         y_upper = tmp[:,1]
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"Rearrange QNet")
-        coverage_re_qnet, length_re_qnet = helper.compute_coverage(y_test,y_lower,y_upper,significance,"Rearrange QNet")
+            helper.plot_func_data(y_test, y_lower, y_upper, "Rearrange QNet")
+        coverage_re_qnet, length_re_qnet = helper.compute_coverage(y_test, y_lower, y_upper, significance, "Rearrange QNet")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('Rearrange QNet')
@@ -484,25 +484,25 @@ def run_experiment(dataset_name,
     if 'cqr_rearrangement' == test_method:
 
         model = helper.AllQNet_RegressorAdapter(model=None,
-                                                 fit_params=None,
-                                                 in_shape = in_shape,
-                                                 hidden_size = hidden_size,
-                                                 quantiles = quantiles_net,
-                                                 learn_func = nn_learn_func,
-                                                 epochs = epochs,
-                                                 batch_size=batch_size,
-                                                 dropout=dropout,
-                                                 lr=lr,
-                                                 wd=wd,
-                                                 test_ratio=cv_test_ratio,
-                                                 random_state=cv_random_state,
-                                                 use_rearrangement=True)
+                                                fit_params=None,
+                                                in_shape = in_shape,
+                                                hidden_size = hidden_size,
+                                                quantiles = quantiles_net,
+                                                learn_func = nn_learn_func,
+                                                epochs = epochs,
+                                                batch_size=batch_size,
+                                                dropout=dropout,
+                                                lr=lr,
+                                                wd=wd,
+                                                test_ratio=cv_test_ratio,
+                                                random_state=cv_random_state,
+                                                use_rearrangement=True)
         nc = RegressorNc(model, QuantileRegErrFunc())
 
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"Rearrange CQR Net")
-        coverage_cp_re_qnet, length_cp_re_qnet = helper.compute_coverage(y_test,y_lower,y_upper,significance,"Rearrange CQR Net")
+            helper.plot_func_data(y_test, y_lower, y_upper, "Rearrange CQR Net")
+        coverage_cp_re_qnet, length_cp_re_qnet = helper.compute_coverage(y_test, y_lower, y_upper, significance, "Rearrange CQR Net")
 
 
         dataset_name_vec.append(dataset_name)
@@ -515,25 +515,25 @@ def run_experiment(dataset_name,
     if 'cqr_asymmetric_rearrangement' == test_method:
 
         model = helper.AllQNet_RegressorAdapter(model=None,
-                                                 fit_params=None,
-                                                 in_shape = in_shape,
-                                                 hidden_size = hidden_size,
-                                                 quantiles = quantiles_net,
-                                                 learn_func = nn_learn_func,
-                                                 epochs = epochs,
-                                                 batch_size=batch_size,
-                                                 dropout=dropout,
-                                                 lr=lr,
-                                                 wd=wd,
-                                                 test_ratio=cv_test_ratio,
-                                                 random_state=cv_random_state,
-                                                 use_rearrangement=True)
+                                                fit_params=None,
+                                                in_shape = in_shape,
+                                                hidden_size = hidden_size,
+                                                quantiles = quantiles_net,
+                                                learn_func = nn_learn_func,
+                                                epochs = epochs,
+                                                batch_size=batch_size,
+                                                dropout=dropout,
+                                                lr=lr,
+                                                wd=wd,
+                                                test_ratio=cv_test_ratio,
+                                                random_state=cv_random_state,
+                                                use_rearrangement=True)
         nc = RegressorNc(model, QuantileRegAsymmetricErrFunc())
 
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"Rearrange CQR Sign Net")
-        coverage_cp_sign_re_qnet, length_cp_sign_re_qnet = helper.compute_coverage(y_test,y_lower,y_upper,significance,"Rearrange CQR Net")
+            helper.plot_func_data(y_test, y_lower, y_upper, "Rearrange CQR Sign Net")
+        coverage_cp_sign_re_qnet, length_cp_sign_re_qnet = helper.compute_coverage(y_test, y_lower, y_upper, significance, "Rearrange CQR Net")
 
 
         dataset_name_vec.append(dataset_name)
@@ -560,16 +560,16 @@ def run_experiment(dataset_name,
         params_qforest["num_vals"] = cv_num_vals
 
         model_full = helper.QuantileForestRegressorAdapter(model = None,
-                                                      fit_params=None,
-                                                      quantiles=np.dot(100,quantiles),
-                                                      params = params_qforest)
+                                                           fit_params=None,
+                                                           quantiles=np.dot(100,quantiles),
+                                                           params = params_qforest)
         model_full.fit(X_train, y_train)
         tmp = model_full.predict(X_test)
         y_lower = tmp[:,0]
         y_upper = tmp[:,1]
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"QRF")
-        coverage_qforest, length_qforest = helper.compute_coverage(y_test,y_lower,y_upper,significance,"QRF")
+            helper.plot_func_data(y_test, y_lower, y_upper, "QRF")
+        coverage_qforest, length_qforest = helper.compute_coverage(y_test, y_lower, y_upper, significance, "QRF")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('QRF')
@@ -601,8 +601,8 @@ def run_experiment(dataset_name,
         nc = RegressorNc(model, QuantileRegErrFunc())
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"CQR RF")
-        coverage_cp_qforest, length_cp_qforest = helper.compute_coverage(y_test,y_lower,y_upper,significance,"CQR RF")
+            helper.plot_func_data(y_test, y_lower, y_upper, "CQR RF")
+        coverage_cp_qforest, length_cp_qforest = helper.compute_coverage(y_test, y_lower, y_upper, significance, "CQR RF")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('CQR RF')
@@ -634,8 +634,8 @@ def run_experiment(dataset_name,
         nc = RegressorNc(model, QuantileRegAsymmetricErrFunc())
         y_lower, y_upper = helper.run_icp(nc, X_train, y_train, X_test, idx_train, idx_cal, significance)
         if plot_results:
-            helper.plot_func_data(y_test,y_lower,y_upper,"CQR Sign RF")
-        coverage_cp_sign_qforest, length_cp_sign_qforest = helper.compute_coverage(y_test,y_lower,y_upper,significance,"CQR Sign RF")
+            helper.plot_func_data(y_test, y_lower, y_upper, "CQR Sign RF")
+        coverage_cp_sign_qforest, length_cp_sign_qforest = helper.compute_coverage(y_test, y_lower, y_upper, significance, "CQR Sign RF")
 
         dataset_name_vec.append(dataset_name)
         method_vec.append('CQR Sign RF')

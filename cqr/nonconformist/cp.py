@@ -1,71 +1,69 @@
-from nonconformist.icp import *
-
 # TODO: move contents from nonconformist.icp here
 
 # -----------------------------------------------------------------------------
 # TcpClassifier
 # -----------------------------------------------------------------------------
 class TcpClassifier(BaseEstimator, ClassifierMixin):
-	"""Transductive conformal classifier.
+    """Transductive conformal classifier.
 
-	Parameters
-	----------
-	nc_function : BaseScorer
-		Nonconformity scorer object used to calculate nonconformity of
-		calibration examples and test patterns. Should implement ``fit(x, y)``
-		and ``calc_nc(x, y)``.
+    Parameters
+    ----------
+    nc_function : BaseScorer
+        Nonconformity scorer object used to calculate nonconformity of
+        calibration examples and test patterns. Should implement ``fit(x, y)``
+        and ``calc_nc(x, y)``.
 
-	smoothing : boolean
-		Decides whether to use stochastic smoothing of p-values.
+    smoothing : boolean
+        Decides whether to use stochastic smoothing of p-values.
 
-	Attributes
-	----------
-	train_x : numpy array of shape [n_cal_examples, n_features]
-		Inputs of training set.
+    Attributes
+    ----------
+    train_x : numpy array of shape [n_cal_examples, n_features]
+        Inputs of training set.
 
-	train_y : numpy array of shape [n_cal_examples]
-		Outputs of calibration set.
+    train_y : numpy array of shape [n_cal_examples]
+        Outputs of calibration set.
 
-	nc_function : BaseScorer
-		Nonconformity scorer object used to calculate nonconformity scores.
+    nc_function : BaseScorer
+        Nonconformity scorer object used to calculate nonconformity scores.
 
-	classes : numpy array of shape [n_classes]
-		List of class labels, with indices corresponding to output columns
-		 of TcpClassifier.predict()
+    classes : numpy array of shape [n_classes]
+        List of class labels, with indices corresponding to output columns
+         of TcpClassifier.predict()
 
-	See also
-	--------
-	IcpClassifier
+    See also
+    --------
+    IcpClassifier
 
-	References
-	----------
-	.. [1] Vovk, V., Gammerman, A., & Shafer, G. (2005). Algorithmic learning
-	in a random world. Springer Science & Business Media.
+    References
+    ----------
+    .. [1] Vovk, V., Gammerman, A., & Shafer, G. (2005). Algorithmic learning
+    in a random world. Springer Science & Business Media.
 
-	Examples
-	--------
-	>>> import numpy as np
-	>>> from sklearn.datasets import load_iris
-	>>> from sklearn.svm import SVC
-	>>> from nonconformist.base import ClassifierAdapter
-	>>> from nonconformist.cp import TcpClassifier
-	>>> from nonconformist.nc import ClassifierNc, MarginErrFunc
-	>>> iris = load_iris()
-	>>> idx = np.random.permutation(iris.target.size)
-	>>> train = idx[:int(idx.size / 2)]
-	>>> test = idx[int(idx.size / 2):]
-	>>> model = ClassifierAdapter(SVC(probability=True))
-	>>> nc = ClassifierNc(model, MarginErrFunc())
-	>>> tcp = TcpClassifier(nc)
-	>>> tcp.fit(iris.data[train, :], iris.target[train])
-	>>> tcp.predict(iris.data[test, :], significance=0.10)
-	...             # doctest: +SKIP
-	array([[ True, False, False],
-		[False,  True, False],
-		...,
-		[False,  True, False],
-		[False,  True, False]], dtype=bool)
-	"""
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from sklearn.datasets import load_iris
+    >>> from sklearn.svm import SVC
+    >>> from cqr.nonconformist import ClassifierAdapter
+    >>> from cqr.nonconformist import TcpClassifier
+    >>> from cqr.nonconformist import ClassifierNc, MarginErrFunc
+    >>> iris = load_iris()
+    >>> idx = np.random.permutation(iris.target.size)
+    >>> train = idx[:int(idx.size / 2)]
+    >>> test = idx[int(idx.size / 2):]
+    >>> model = ClassifierAdapter(SVC(probability=True))
+    >>> nc = ClassifierNc(model, MarginErrFunc())
+    >>> tcp = TcpClassifier(nc)
+    >>> tcp.fit(iris.data[train, :], iris.target[train])
+    >>> tcp.predict(iris.data[test, :], significance=0.10)
+    ...             # doctest: +SKIP
+    array([[ True, False, False],
+        [False,  True, False],
+        ...,
+        [False,  True, False],
+        [False,  True, False]], dtype=bool)
+    """
 
 	def __init__(self, nc_function, condition=None, smoothing=True):
 		self.train_x, self.train_y = None, None

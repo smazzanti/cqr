@@ -13,8 +13,8 @@ from functools import partial
 import numpy as np
 from sklearn.base import BaseEstimator
 
-from nonconformist.base import RegressorMixin, ClassifierMixin
-from nonconformist.util import calc_p
+from cqr.nonconformist.base import RegressorMixin, ClassifierMixin
+from cqr.nonconformist.util import calc_p
 
 
 # -----------------------------------------------------------------------------
@@ -120,69 +120,69 @@ class BaseIcp(BaseEstimator):
 # Inductive conformal classifier
 # -----------------------------------------------------------------------------
 class IcpClassifier(BaseIcp, ClassifierMixin):
-	"""Inductive conformal classifier.
+    """Inductive conformal classifier.
 
-	Parameters
-	----------
-	nc_function : BaseScorer
-		Nonconformity scorer object used to calculate nonconformity of
-		calibration examples and test patterns. Should implement ``fit(x, y)``
-		and ``calc_nc(x, y)``.
+    Parameters
+    ----------
+    nc_function : BaseScorer
+        Nonconformity scorer object used to calculate nonconformity of
+        calibration examples and test patterns. Should implement ``fit(x, y)``
+        and ``calc_nc(x, y)``.
 
-	smoothing : boolean
-		Decides whether to use stochastic smoothing of p-values.
+    smoothing : boolean
+        Decides whether to use stochastic smoothing of p-values.
 
-	Attributes
-	----------
-	cal_x : numpy array of shape [n_cal_examples, n_features]
-		Inputs of calibration set.
+    Attributes
+    ----------
+    cal_x : numpy array of shape [n_cal_examples, n_features]
+        Inputs of calibration set.
 
-	cal_y : numpy array of shape [n_cal_examples]
-		Outputs of calibration set.
+    cal_y : numpy array of shape [n_cal_examples]
+        Outputs of calibration set.
 
-	nc_function : BaseScorer
-		Nonconformity scorer object used to calculate nonconformity scores.
+    nc_function : BaseScorer
+        Nonconformity scorer object used to calculate nonconformity scores.
 
-	classes : numpy array of shape [n_classes]
-		List of class labels, with indices corresponding to output columns
-		 of IcpClassifier.predict()
+    classes : numpy array of shape [n_classes]
+        List of class labels, with indices corresponding to output columns
+         of IcpClassifier.predict()
 
-	See also
-	--------
-	IcpRegressor
+    See also
+    --------
+    IcpRegressor
 
-	References
-	----------
-	.. [1] Papadopoulos, H., & Haralambous, H. (2011). Reliable prediction
-		intervals with regression neural networks. Neural Networks, 24(8),
-		842-851.
+    References
+    ----------
+    .. [1] Papadopoulos, H., & Haralambous, H. (2011). Reliable prediction
+        intervals with regression neural networks. Neural Networks, 24(8),
+        842-851.
 
-	Examples
-	--------
-	>>> import numpy as np
-	>>> from sklearn.datasets import load_iris
-	>>> from sklearn.tree import DecisionTreeClassifier
-	>>> from nonconformist.base import ClassifierAdapter
-	>>> from nonconformist.icp import IcpClassifier
-	>>> from nonconformist.nc import ClassifierNc, MarginErrFunc
-	>>> iris = load_iris()
-	>>> idx = np.random.permutation(iris.target.size)
-	>>> train = idx[:int(idx.size / 3)]
-	>>> cal = idx[int(idx.size / 3):int(2 * idx.size / 3)]
-	>>> test = idx[int(2 * idx.size / 3):]
-	>>> model = ClassifierAdapter(DecisionTreeClassifier())
-	>>> nc = ClassifierNc(model, MarginErrFunc())
-	>>> icp = IcpClassifier(nc)
-	>>> icp.fit(iris.data[train, :], iris.target[train])
-	>>> icp.calibrate(iris.data[cal, :], iris.target[cal])
-	>>> icp.predict(iris.data[test, :], significance=0.10)
-	...             # doctest: +SKIP
-	array([[ True, False, False],
-		[False,  True, False],
-		...,
-		[False,  True, False],
-		[False,  True, False]], dtype=bool)
-	"""
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from sklearn.datasets import load_iris
+    >>> from sklearn.tree import DecisionTreeClassifier
+    >>> from cqr.nonconformist import ClassifierAdapter
+    >>> from cqr.nonconformist import IcpClassifier
+    >>> from cqr.nonconformist import ClassifierNc, MarginErrFunc
+    >>> iris = load_iris()
+    >>> idx = np.random.permutation(iris.target.size)
+    >>> train = idx[:int(idx.size / 3)]
+    >>> cal = idx[int(idx.size / 3):int(2 * idx.size / 3)]
+    >>> test = idx[int(2 * idx.size / 3):]
+    >>> model = ClassifierAdapter(DecisionTreeClassifier())
+    >>> nc = ClassifierNc(model, MarginErrFunc())
+    >>> icp = IcpClassifier(nc)
+    >>> icp.fit(iris.data[train, :], iris.target[train])
+    >>> icp.calibrate(iris.data[cal, :], iris.target[cal])
+    >>> icp.predict(iris.data[test, :], significance=0.10)
+    ...             # doctest: +SKIP
+    array([[ True, False, False],
+        [False,  True, False],
+        ...,
+        [False,  True, False],
+        [False,  True, False]], dtype=bool)
+    """
 	def __init__(self, nc_function, condition=None, smoothing=True):
 		super(IcpClassifier, self).__init__(nc_function, condition)
 		self.classes = None
@@ -292,66 +292,66 @@ class IcpClassifier(BaseIcp, ClassifierMixin):
 # Inductive conformal regressor
 # -----------------------------------------------------------------------------
 class IcpRegressor(BaseIcp, RegressorMixin):
-	"""Inductive conformal regressor.
+    """Inductive conformal regressor.
 
-	Parameters
-	----------
-	nc_function : BaseScorer
-		Nonconformity scorer object used to calculate nonconformity of
-		calibration examples and test patterns. Should implement ``fit(x, y)``,
-		``calc_nc(x, y)`` and ``predict(x, nc_scores, significance)``.
+    Parameters
+    ----------
+    nc_function : BaseScorer
+        Nonconformity scorer object used to calculate nonconformity of
+        calibration examples and test patterns. Should implement ``fit(x, y)``,
+        ``calc_nc(x, y)`` and ``predict(x, nc_scores, significance)``.
 
-	Attributes
-	----------
-	cal_x : numpy array of shape [n_cal_examples, n_features]
-		Inputs of calibration set.
+    Attributes
+    ----------
+    cal_x : numpy array of shape [n_cal_examples, n_features]
+        Inputs of calibration set.
 
-	cal_y : numpy array of shape [n_cal_examples]
-		Outputs of calibration set.
+    cal_y : numpy array of shape [n_cal_examples]
+        Outputs of calibration set.
 
-	nc_function : BaseScorer
-		Nonconformity scorer object used to calculate nonconformity scores.
+    nc_function : BaseScorer
+        Nonconformity scorer object used to calculate nonconformity scores.
 
-	See also
-	--------
-	IcpClassifier
+    See also
+    --------
+    IcpClassifier
 
-	References
-	----------
-	.. [1] Papadopoulos, H., Proedrou, K., Vovk, V., & Gammerman, A. (2002).
-		Inductive confidence machines for regression. In Machine Learning: ECML
-		2002 (pp. 345-356). Springer Berlin Heidelberg.
+    References
+    ----------
+    .. [1] Papadopoulos, H., Proedrou, K., Vovk, V., & Gammerman, A. (2002).
+        Inductive confidence machines for regression. In Machine Learning: ECML
+        2002 (pp. 345-356). Springer Berlin Heidelberg.
 
-	.. [2] Papadopoulos, H., & Haralambous, H. (2011). Reliable prediction
-		intervals with regression neural networks. Neural Networks, 24(8),
-		842-851.
+    .. [2] Papadopoulos, H., & Haralambous, H. (2011). Reliable prediction
+        intervals with regression neural networks. Neural Networks, 24(8),
+        842-851.
 
-	Examples
-	--------
-	>>> import numpy as np
-	>>> from sklearn.datasets import load_boston
-	>>> from sklearn.tree import DecisionTreeRegressor
-	>>> from nonconformist.base import RegressorAdapter
-	>>> from nonconformist.icp import IcpRegressor
-	>>> from nonconformist.nc import RegressorNc, AbsErrorErrFunc
-	>>> boston = load_boston()
-	>>> idx = np.random.permutation(boston.target.size)
-	>>> train = idx[:int(idx.size / 3)]
-	>>> cal = idx[int(idx.size / 3):int(2 * idx.size / 3)]
-	>>> test = idx[int(2 * idx.size / 3):]
-	>>> model = RegressorAdapter(DecisionTreeRegressor())
-	>>> nc = RegressorNc(model, AbsErrorErrFunc())
-	>>> icp = IcpRegressor(nc)
-	>>> icp.fit(boston.data[train, :], boston.target[train])
-	>>> icp.calibrate(boston.data[cal, :], boston.target[cal])
-	>>> icp.predict(boston.data[test, :], significance=0.10)
-	...     # doctest: +SKIP
-	array([[  5. ,  20.6],
-		[ 15.5,  31.1],
-		...,
-		[ 14.2,  29.8],
-		[ 11.6,  27.2]])
-	"""
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from sklearn.datasets import load_boston
+    >>> from sklearn.tree import DecisionTreeRegressor
+    >>> from cqr.nonconformist import RegressorAdapter
+    >>> from cqr.nonconformist import IcpRegressor
+    >>> from cqr.nonconformist import RegressorNc, AbsErrorErrFunc
+    >>> boston = load_boston()
+    >>> idx = np.random.permutation(boston.target.size)
+    >>> train = idx[:int(idx.size / 3)]
+    >>> cal = idx[int(idx.size / 3):int(2 * idx.size / 3)]
+    >>> test = idx[int(2 * idx.size / 3):]
+    >>> model = RegressorAdapter(DecisionTreeRegressor())
+    >>> nc = RegressorNc(model, AbsErrorErrFunc())
+    >>> icp = IcpRegressor(nc)
+    >>> icp.fit(boston.data[train, :], boston.target[train])
+    >>> icp.calibrate(boston.data[cal, :], boston.target[cal])
+    >>> icp.predict(boston.data[test, :], significance=0.10)
+    ...     # doctest: +SKIP
+    array([[  5. ,  20.6],
+        [ 15.5,  31.1],
+        ...,
+        [ 14.2,  29.8],
+        [ 11.6,  27.2]])
+    """
 	def __init__(self, nc_function, condition=None):
 		super(IcpRegressor, self).__init__(nc_function, condition)
 

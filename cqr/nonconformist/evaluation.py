@@ -10,7 +10,7 @@ Evaluation of conformal predictors.
 
 from __future__ import division
 
-from nonconformist.base import RegressorMixin, ClassifierMixin
+from cqr.nonconformist.base import RegressorMixin, ClassifierMixin
 
 import sys
 import numpy as np
@@ -35,40 +35,40 @@ class BaseIcpCvHelper(BaseEstimator):
 
 
 class ClassIcpCvHelper(BaseIcpCvHelper, ClassifierMixin):
-	"""Helper class for running the ``cross_val_score`` evaluation
-	method on IcpClassifiers.
+    """Helper class for running the ``cross_val_score`` evaluation
+    method on IcpClassifiers.
 
-	See also
-	--------
-	IcpRegCrossValHelper
+    See also
+    --------
+    IcpRegCrossValHelper
 
-	Examples
-	--------
-	>>> from sklearn.datasets import load_iris
-	>>> from sklearn.ensemble import RandomForestClassifier
-	>>> from nonconformist.icp import IcpClassifier
-	>>> from nonconformist.nc import ClassifierNc, MarginErrFunc
-	>>> from nonconformist.evaluation import ClassIcpCvHelper
-	>>> from nonconformist.evaluation import class_mean_errors
-	>>> from nonconformist.evaluation import cross_val_score
-	>>> data = load_iris()
-	>>> nc = ProbEstClassifierNc(RandomForestClassifier(), MarginErrFunc())
-	>>> icp = IcpClassifier(nc)
-	>>> icp_cv = ClassIcpCvHelper(icp)
-	>>> cross_val_score(icp_cv,
-	...                 data.data,
-	...                 data.target,
-	...                 iterations=2,
-	...                 folds=2,
-	...                 scoring_funcs=[class_mean_errors],
-	...                 significance_levels=[0.1])
-	...     # doctest: +SKIP
-	   class_mean_errors  fold  iter  significance
-	0           0.013333     0     0           0.1
-	1           0.080000     1     0           0.1
-	2           0.053333     0     1           0.1
-	3           0.080000     1     1           0.1
-	"""
+    Examples
+    --------
+    >>> from sklearn.datasets import load_iris
+    >>> from sklearn.ensemble import RandomForestClassifier
+    >>> from cqr.nonconformist import IcpClassifier
+    >>> from cqr.nonconformist import ClassifierNc, MarginErrFunc
+    >>> from cqr.nonconformist import ClassIcpCvHelper
+    >>> from cqr.nonconformist import class_mean_errors
+    >>> from cqr.nonconformist import cross_val_score
+    >>> data = load_iris()
+    >>> nc = ProbEstClassifierNc(RandomForestClassifier(), MarginErrFunc())
+    >>> icp = IcpClassifier(nc)
+    >>> icp_cv = ClassIcpCvHelper(icp)
+    >>> cross_val_score(icp_cv,
+    ...                 data.data,
+    ...                 data.target,
+    ...                 iterations=2,
+    ...                 folds=2,
+    ...                 scoring_funcs=[class_mean_errors],
+    ...                 significance_levels=[0.1])
+    ...     # doctest: +SKIP
+       class_mean_errors  fold  iter  significance
+    0           0.013333     0     0           0.1
+    1           0.080000     1     0           0.1
+    2           0.053333     0     1           0.1
+    3           0.080000     1     1           0.1
+    """
 	def __init__(self, icp, calibration_portion=0.25):
 		super(ClassIcpCvHelper, self).__init__(icp, calibration_portion)
 
@@ -81,40 +81,40 @@ class ClassIcpCvHelper(BaseIcpCvHelper, ClassifierMixin):
 
 
 class RegIcpCvHelper(BaseIcpCvHelper, RegressorMixin):
-	"""Helper class for running the ``cross_val_score`` evaluation
-	method on IcpRegressors.
+    """Helper class for running the ``cross_val_score`` evaluation
+    method on IcpRegressors.
 
-	See also
-	--------
-	IcpClassCrossValHelper
+    See also
+    --------
+    IcpClassCrossValHelper
 
-	Examples
-	--------
-	>>> from sklearn.datasets import load_boston
-	>>> from sklearn.ensemble import RandomForestRegressor
-	>>> from nonconformist.icp import IcpRegressor
-	>>> from nonconformist.nc import RegressorNc, AbsErrorErrFunc
-	>>> from nonconformist.evaluation import RegIcpCvHelper
-	>>> from nonconformist.evaluation import reg_mean_errors
-	>>> from nonconformist.evaluation import cross_val_score
-	>>> data = load_boston()
-	>>> nc = RegressorNc(RandomForestRegressor(), AbsErrorErrFunc())
-	>>> icp = IcpRegressor(nc)
-	>>> icp_cv = RegIcpCvHelper(icp)
-	>>> cross_val_score(icp_cv,
-	...                 data.data,
-	...                 data.target,
-	...                 iterations=2,
-	...                 folds=2,
-	...                 scoring_funcs=[reg_mean_errors],
-	...                 significance_levels=[0.1])
-	...     # doctest: +SKIP
-	   fold  iter  reg_mean_errors  significance
-	0     0     0         0.185771           0.1
-	1     1     0         0.138340           0.1
-	2     0     1         0.071146           0.1
-	3     1     1         0.043478           0.1
-	"""
+    Examples
+    --------
+    >>> from sklearn.datasets import load_boston
+    >>> from sklearn.ensemble import RandomForestRegressor
+    >>> from cqr.nonconformist import IcpRegressor
+    >>> from cqr.nonconformist import RegressorNc, AbsErrorErrFunc
+    >>> from cqr.nonconformist import RegIcpCvHelper
+    >>> from cqr.nonconformist import reg_mean_errors
+    >>> from cqr.nonconformist import cross_val_score
+    >>> data = load_boston()
+    >>> nc = RegressorNc(RandomForestRegressor(), AbsErrorErrFunc())
+    >>> icp = IcpRegressor(nc)
+    >>> icp_cv = RegIcpCvHelper(icp)
+    >>> cross_val_score(icp_cv,
+    ...                 data.data,
+    ...                 data.target,
+    ...                 iterations=2,
+    ...                 folds=2,
+    ...                 scoring_funcs=[reg_mean_errors],
+    ...                 significance_levels=[0.1])
+    ...     # doctest: +SKIP
+       fold  iter  reg_mean_errors  significance
+    0     0     0         0.185771           0.1
+    1     1     0         0.138340           0.1
+    2     0     1         0.071146           0.1
+    3     1     1         0.043478           0.1
+    """
 	def __init__(self, icp, calibration_portion=0.25):
 		super(RegIcpCvHelper, self).__init__(icp, calibration_portion)
 

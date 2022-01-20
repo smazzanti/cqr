@@ -10,8 +10,8 @@ import numpy as np
 from sklearn.cross_validation import KFold, StratifiedKFold
 from sklearn.cross_validation import ShuffleSplit, StratifiedShuffleSplit
 from sklearn.base import clone
-from nonconformist.base import BaseEstimator
-from nonconformist.util import calc_p
+from cqr.nonconformist.base import BaseEstimator
+from cqr.nonconformist.util import calc_p
 
 
 # -----------------------------------------------------------------------------
