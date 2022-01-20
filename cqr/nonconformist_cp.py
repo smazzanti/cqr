@@ -1,3 +1,5 @@
+from cqr.nonconformist_icp import *
+
 # TODO: move contents from nonconformist.icp here
 
 # -----------------------------------------------------------------------------
