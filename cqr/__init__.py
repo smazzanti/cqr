@@ -1,2 +1,2 @@
 #!/usr/bin/env python
-from cqr import *
+A=1
