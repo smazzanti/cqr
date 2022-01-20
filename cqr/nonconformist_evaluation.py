@@ -10,15 +10,15 @@ Evaluation of conformal predictors.
 
 from __future__ import division
 
-from cqr.nonconformist.base import RegressorMixin, ClassifierMixin
+from cqr.nonconformist_base import RegressorMixin, ClassifierMixin
 
 import sys
 import numpy as np
 import pandas as pd
 
-from sklearn.cross_validation import StratifiedShuffleSplit
-from sklearn.cross_validation import KFold
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.model_selection import KFold
+from sklearn.model_selection import train_test_split
 from sklearn.base import clone, BaseEstimator
 
 
